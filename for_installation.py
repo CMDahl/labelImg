@@ -21,5 +21,4 @@ if __name__ == "__main__":
     print(f"Successfully compiled {qrc_file} to {output_file}")
 
 pyqt5ac.main(rccOptions='', uicOptions='--from-imports', force=False, initPackage=True, config='',
-             ioPaths=[['*.ui', 'resources_ui.py'],
-                     ['resources.qrc', 'resources.py']])
+             ioPaths=[['resources.qrc', 'libs/resources.py']])
