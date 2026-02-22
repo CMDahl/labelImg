@@ -6,6 +6,7 @@ LabelImg is a graphical image annotation tool. This repository runs it inside a 
 
 ## Table of Contents
 
+- [Sample Data](#sample-data)
 - [Prerequisites](#prerequisites)
 - [Step 1 — Clone the Repository](#step-1--clone-the-repository)
 - [Step 2 — Build the Docker Image](#step-2--build-the-docker-image)
@@ -16,7 +17,37 @@ LabelImg is a graphical image annotation tool. This repository runs it inside a 
 - [Predefined Classes](#predefined-classes)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
 - [Stopping and Restarting](#stopping-and-restarting)
+- [Sample Data](#sample-data)
 - [Troubleshooting](#troubleshooting)
+
+---
+
+## Sample Data
+
+The repository includes a sample image batch in `data/BB-1912/` for testing and reference. These are scanned pages from historical civil registers.
+
+| File | Description |
+|---|---|
+| `A0030917_00038.jpg` | Scanned register page (annotated) |
+| `A0030917_00038_overlay.xml` | Existing annotations for above |
+| `A0030917_00987.jpg` | Scanned register page |
+| `A0030917_00988.jpg` | Scanned register page |
+| `A0030917_00989.jpg` | Scanned register page |
+| `A0030917_00990.jpg` | Scanned register page (annotated) |
+| `A0030917_00990_overlay.xml` | Existing annotations for above |
+| `A0030957_00794.jpg` | Scanned register page (annotated) |
+| `A0030957_00794_overlay.xml` | Existing annotations for above |
+
+3 of the 6 images already have bounding-box annotations in PascalVOC format (`.xml`). These serve as examples of correctly labelled output.
+
+To start the container with this sample data:
+
+```powershell
+docker run -d -p 6080:6080 `
+  -v "D:\Christian\GitHub\labelImg_docker\data\BB-1912:/data" `
+  --name labelimg `
+  labelimg:latest
+```
 
 ---
 
@@ -93,11 +124,11 @@ docker run -d -p 6080:6080 \
 
 Replace `D:\path\to\your\images` with the actual folder on your machine that contains the images you want to annotate.
 
-### Example
+### Example — using the included sample data
 
 ```powershell
 docker run -d -p 6080:6080 `
-  -v "D:\Christian\GitHub\SWE-BB-tableparser-version-2\templates\1930\typeA:/data" `
+  -v "D:\Christian\GitHub\labelImg_docker\data\BB-1912:/data" `
   --name labelimg `
   labelimg:latest
 ```
@@ -154,23 +185,15 @@ To switch to **YOLO** format (`.txt` files), click the format toggle button in t
 
 The file `data/predefined_classes.txt` defines the label options available in the dropdown. Edit this file and rebuild the image to update the class list.
 
-Current classes:
+Current classes (configured for historical civil register document annotation):
 ```
-dog
-person
-cat
-tv
-car
-meatballs
-marinara sauce
-tomato soup
-chicken noodle soup
-french onion soup
-chicken breast
-ribs
-pulled pork
-hamburger
-cavity
+birthdate-
+name-
+fathername-
+fatherbirthdate-
+mothername-
+motherbirthdate-
+mothercivilstatus-
 ```
 
 To add or change classes, edit `data/predefined_classes.txt` and rebuild:
