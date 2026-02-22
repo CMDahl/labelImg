@@ -49,7 +49,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openbox \
     # Utilities
     supervisor \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && ln -sf /usr/share/novnc/vnc_auto.html /usr/share/novnc/index.html
 
 # Set working directory
 WORKDIR /app
@@ -65,6 +66,7 @@ RUN mkdir -p /var/log/supervisor
 COPY <<EOF /etc/supervisor/conf.d/supervisord.conf
 [supervisord]
 nodaemon=true
+user=root
 logfile=/var/log/supervisor/supervisord.log
 pidfile=/var/run/supervisord.pid
 
@@ -79,7 +81,7 @@ autorestart=true
 priority=200
 
 [program:novnc]
-command=/usr/share/novnc/utils/novnc_proxy --vnc localhost:5900 --listen 6080
+command=/usr/bin/websockify --web /usr/share/novnc 6080 localhost:5900
 autorestart=true
 priority=300
 
